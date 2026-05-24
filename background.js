@@ -1,3 +1,34 @@
+const TRANSLATIONS = {
+  en: {
+    contextCopyPage: "Copy page URL clearly",
+    contextCopyLink: "Copy this link clearly",
+    contextCopyNoTracking: "Copy page URL without tracking"
+  },
+  ar: {
+    contextCopyPage: "نسخ رابط الصفحة بشكل واضح",
+    contextCopyLink: "نسخ هذا الرابط بشكل واضح",
+    contextCopyNoTracking: "نسخ رابط الصفحة بدون تتبّع"
+  },
+  zh: {
+    contextCopyPage: "清晰复制页面链接",
+    contextCopyLink: "清晰复制此链接",
+    contextCopyNoTracking: "复制无跟踪页面链接"
+  }
+};
+
+function normalizeLang(lang) {
+  if (!lang || lang === "auto") {
+    const uiLang = chrome.i18n?.getUILanguage?.() || "en";
+    return uiLang.toLowerCase().startsWith("ar") ? "ar" : uiLang.toLowerCase().startsWith("zh") ? "zh" : "en";
+  }
+  return TRANSLATIONS[lang] ? lang : "en";
+}
+
+function t(key, lang) {
+  const activeLang = normalizeLang(lang);
+  return TRANSLATIONS[activeLang]?.[key] || TRANSLATIONS.en[key] || key;
+}
+
 function safeDecodeUrl(url) {
   try {
     return decodeURI(url);
@@ -21,32 +52,39 @@ function removeTrackingParams(url) {
   }
 }
 
-async function copyText(text) {
-  await chrome.offscreen?.createDocument?.({
-    url: "offscreen.html",
-    reasons: ["CLIPBOARD"],
-    justification: "Copy clean URL to clipboard"
-  }).catch(() => {});
+async function getLanguageChoice() {
+  const result = await chrome.storage.sync.get({ language: "auto" });
+  return result.language || "auto";
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+async function rebuildContextMenus() {
+  const lang = await getLanguageChoice();
+  await chrome.contextMenus.removeAll();
+
   chrome.contextMenus.create({
     id: "copy-clean-page-url",
-    title: "نسخ رابط الصفحة بشكل واضح",
+    title: t("contextCopyPage", lang),
     contexts: ["page"]
   });
 
   chrome.contextMenus.create({
     id: "copy-clean-link-url",
-    title: "نسخ هذا الرابط بشكل واضح",
+    title: t("contextCopyLink", lang),
     contexts: ["link"]
   });
 
   chrome.contextMenus.create({
     id: "copy-no-tracking-page-url",
-    title: "نسخ رابط الصفحة بدون تتبّع",
+    title: t("contextCopyNoTracking", lang),
     contexts: ["page"]
   });
+}
+
+chrome.runtime.onInstalled.addListener(rebuildContextMenus);
+chrome.runtime.onStartup.addListener(rebuildContextMenus);
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message?.type === "LANGUAGE_CHANGED") rebuildContextMenus();
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -64,7 +102,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     text = removeTrackingParams(tab?.url || "");
   }
 
-  if (!text) return;
+  if (!text || !tab?.id) return;
 
   chrome.scripting?.executeScript?.({
     target: { tabId: tab.id },

@@ -1,32 +1,46 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>رابط واضح</title>
+  <title>Clear URL</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="card">
-    <div class="brand">
-      <div class="logo">ر</div>
-      <div>
-        <h1>رابط واضح</h1>
-        <p>انسخ الرابط بشكل مقروء</p>
+  <main class="app-shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" id="logoText">C</div>
+        <div>
+          <h1 data-i18n="appName">Clear URL</h1>
+          <p data-i18n="tagline">Copy readable links</p>
+        </div>
+      </div>
+      <div class="language-wrap">
+        <label for="languageSelect" class="sr-only" data-i18n="language">Language</label>
+        <select id="languageSelect" aria-label="Language">
+          <option value="auto">Auto</option>
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+          <option value="zh">中文</option>
+        </select>
       </div>
     </div>
 
-    <label for="urlBox">الرابط الحالي</label>
-    <textarea id="urlBox" rows="4" readonly></textarea>
+    <section class="url-panel" aria-labelledby="currentUrlLabel">
+      <label id="currentUrlLabel" for="urlBox" data-i18n="currentUrl">Current URL</label>
+      <textarea id="urlBox" rows="4" readonly></textarea>
+    </section>
 
     <div class="buttons">
-      <button id="copyClean" class="primary">نسخ الرابط الواضح</button>
-      <button id="copyNoTracking">نسخ بدون تتبّع</button>
-      <button id="copyEncoded">نسخ الرابط المشفّر</button>
+      <button id="copyClean" class="primary" data-i18n="copyClean">Copy clean URL</button>
+      <button id="copyNoTracking" data-i18n="copyNoTracking">Copy without tracking</button>
+      <button id="copyEncoded" data-i18n="copyEncoded">Copy encoded URL</button>
     </div>
 
     <p id="status" class="status"></p>
   </main>
+  <script src="i18n.js"></script>
   <script src="utils.js"></script>
   <script src="popup.js"></script>
 </body>

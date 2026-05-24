@@ -1,11 +1,26 @@
 const urlBox = document.getElementById("urlBox");
 const statusEl = document.getElementById("status");
+const languageSelect = document.getElementById("languageSelect");
 let currentUrl = "";
+let languageChoice = "auto";
 
-function showStatus(message) {
-  statusEl.textContent = message;
+function showStatus(messageKey) {
+  statusEl.textContent = t(messageKey, languageChoice);
   setTimeout(() => { statusEl.textContent = ""; }, 1800);
 }
+
+async function initLanguage() {
+  languageChoice = await getSavedLanguageChoice();
+  languageSelect.value = languageChoice;
+  applyLanguage(languageChoice);
+}
+
+languageSelect.addEventListener("change", async () => {
+  languageChoice = languageSelect.value;
+  await setSavedLanguageChoice(languageChoice);
+  applyLanguage(languageChoice);
+  chrome.runtime.sendMessage({ type: "LANGUAGE_CHANGED" });
+});
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   currentUrl = tabs?.[0]?.url || "";
@@ -14,15 +29,17 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
 document.getElementById("copyClean").addEventListener("click", async () => {
   await copyToClipboard(safeDecodeUrl(currentUrl));
-  showStatus("تم نسخ الرابط الواضح");
+  showStatus("copiedClean");
 });
 
 document.getElementById("copyNoTracking").addEventListener("click", async () => {
   await copyToClipboard(removeTrackingParams(currentUrl));
-  showStatus("تم نسخ الرابط بدون تتبّع");
+  showStatus("copiedNoTracking");
 });
 
 document.getElementById("copyEncoded").addEventListener("click", async () => {
   await copyToClipboard(currentUrl);
-  showStatus("تم نسخ الرابط المشفّر");
+  showStatus("copiedEncoded");
 });
+
+initLanguage();
