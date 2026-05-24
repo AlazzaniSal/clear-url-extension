@@ -10,12 +10,15 @@
   <main class="app-shell">
     <div class="topbar">
       <div class="brand">
-        <div class="logo" id="logoText">C</div>
+        <img class="logo" src="icons/icon48.png" alt="" width="48" height="48" />
         <div>
           <h1 data-i18n="appName">Clear URL</h1>
           <p data-i18n="tagline">Copy readable links</p>
         </div>
       </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon" aria-hidden="true"></span>
+      </button>
       <div class="language-wrap">
         <label for="languageSelect" class="sr-only" data-i18n="language">Language</label>
         <select id="languageSelect" aria-label="Language">

@@ -10,6 +10,8 @@ const TRANSLATIONS = {
     copiedClean: "Clean URL copied",
     copiedNoTracking: "URL copied without tracking",
     copiedEncoded: "Encoded URL copied",
+    switchToDarkMode: "Switch to dark mode",
+    switchToLightMode: "Switch to light mode",
     contextCopyPage: "Copy page URL clearly",
     contextCopyLink: "Copy this link clearly",
     contextCopyNoTracking: "Copy page URL without tracking"
@@ -180,7 +182,4 @@ function applyLanguage(languageChoice) {
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = t(element.dataset.i18n, lang);
   });
-
-  const logoText = document.getElementById("logoText");
-  if (logoText) logoText.textContent = logoLetters[lang] || "C";
 }
