@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="assets/banner.png">
+</p>
+
+<p align="center">
   🇺🇸 <a href="README.md">English</a> |
   🇸🇦 <a href="README.ar.md">العربية</a> |
   🇨🇳 <a href="README.zh.md">中文</a> |
