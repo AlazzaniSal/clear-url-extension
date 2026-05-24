@@ -7,19 +7,50 @@ const TRANSLATIONS = {
   ar: {
     contextCopyPage: "نسخ رابط الصفحة بشكل واضح",
     contextCopyLink: "نسخ هذا الرابط بشكل واضح",
-    contextCopyNoTracking: "نسخ رابط الصفحة بدون تتبّع"
+    contextCopyNoTracking: "نسخ رابط الصفحة بدون تتبع"
   },
   zh: {
     contextCopyPage: "清晰复制页面链接",
     contextCopyLink: "清晰复制此链接",
     contextCopyNoTracking: "复制无跟踪页面链接"
+  },
+  de: {
+    contextCopyPage: "Seiten-URL klar kopieren",
+    contextCopyLink: "Diesen Link klar kopieren",
+    contextCopyNoTracking: "Seiten-URL ohne Tracking kopieren"
+  },
+  fr: {
+    contextCopyPage: "Copier clairement l'URL de la page",
+    contextCopyLink: "Copier clairement ce lien",
+    contextCopyNoTracking: "Copier l'URL de la page sans suivi"
+  },
+  ja: {
+    contextCopyPage: "ページURLを読みやすくコピー",
+    contextCopyLink: "このリンクを読みやすくコピー",
+    contextCopyNoTracking: "ページURLを追跡なしでコピー"
+  },
+  ru: {
+    contextCopyPage: "Копировать URL страницы в читаемом виде",
+    contextCopyLink: "Копировать эту ссылку в читаемом виде",
+    contextCopyNoTracking: "Копировать URL страницы без отслеживания"
+  },
+  pt: {
+    contextCopyPage: "Copiar URL da página claramente",
+    contextCopyLink: "Copiar este link claramente",
+    contextCopyNoTracking: "Copiar URL da página sem rastreamento"
+  },
+  es: {
+    contextCopyPage: "Copiar claramente la URL de la página",
+    contextCopyLink: "Copiar claramente este enlace",
+    contextCopyNoTracking: "Copiar URL de la página sin seguimiento"
   }
 };
 
 function normalizeLang(lang) {
   if (!lang || lang === "auto") {
     const uiLang = chrome.i18n?.getUILanguage?.() || "en";
-    return uiLang.toLowerCase().startsWith("ar") ? "ar" : uiLang.toLowerCase().startsWith("zh") ? "zh" : "en";
+    const baseLang = uiLang.toLowerCase().split("-")[0];
+    return TRANSLATIONS[baseLang] ? baseLang : "en";
   }
   return TRANSLATIONS[lang] ? lang : "en";
 }

@@ -5,7 +5,13 @@
 <p align="center">
   🇺🇸 <a href="README.md">English</a> |
   🇸🇦 <a href="README.ar.md">العربية</a> |
-  🇨🇳 <a href="README.zh.md">中文</a>
+  🇨🇳 <a href="README.zh.md">中文</a> |
+  🇩🇪 <a href="README.de.md">Deutsch</a> |
+  🇫🇷 <a href="README.fr.md">Français</a> |
+  🇯🇵 <a href="README.ja.md">日本語</a> |
+  🇷🇺 <a href="README.ru.md">Русский</a> |
+  🇵🇹 <a href="README.pt.md">Português</a> |
+  🇪🇸 <a href="README.es.md">Español</a>
 </p>
 
 ## 功能
@@ -13,7 +19,7 @@
 - 以可读格式复制多语言链接。
 - 移除常见跟踪参数，例如 `utm_source`、`fbclid` 和 `gclid`。
 - 支持右键菜单复制页面链接或页面内链接。
-- 内置语言切换：自动、英语、阿拉伯语、中文。
+- 内置语言切换：自动、英语、阿拉伯语、中文、德语、法语、日语、俄语、葡萄牙语和西班牙语。
 - 在浏览器本地运行。
 
 ## 本地安装
