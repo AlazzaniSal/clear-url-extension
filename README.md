@@ -1,7 +1,3 @@
-# Clear URL / رابط واضح
-
-A Chrome extension for copying URLs in a clean, readable format instead of encoded text.
-
 <p align="center">
   🇺🇸 <a href="README.md">English</a> |
   🇸🇦 <a href="README.ar.md">العربية</a> |
@@ -14,21 +10,29 @@ A Chrome extension for copying URLs in a clean, readable format instead of encod
   🇪🇸 <a href="README.es.md">Español</a>
 </p>
 
-## Features
+# 🔗 Clear URL extension
+Chrome extension to copy URLs in a clean, readable format instead of encoded ones (Arabic, Chinese, etc.)
 
-- Copy multilingual URLs in a readable format.
-- Remove common tracking parameters such as `utm_source`, `fbclid`, and `gclid`.
-- Right-click menu support for page URLs and links.
-- Built-in language switcher: Auto, English, Arabic, Chinese, German, French, Japanese, Russian, Portuguese, and Spanish.
-- Works locally in the browser.
+## ✨ Features
+- Copy URL in readable format (Arabic, Chinese, etc.)
+- Remove tracking parameters (utm, fbclid, etc.)
+- Right-click context menu support
+- Simple and fast
 
-## Install locally
+## 🚀 Installation
+1. Download or clone the repo
+2. Go to chrome://extensions
+3. Enable Developer Mode
+4. Click "Load unpacked"
+5. Select the extension folder
 
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Click **Load unpacked**.
-4. Select this extension folder.
+## 🧠 Why?
+Browsers like Chrome copy URLs in encoded format:
+%d9%85%d8%b3%d9%84%d8%b3%d9%84
+This extension converts them into:
+مسلسل
+## 🤝 Contributing
+Pull requests are welcome!
 
-## License
-
+## 📜 License
 MIT
