@@ -12,7 +12,7 @@ function removeTrackingParams(url) {
     const trackingParams = [
       "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
       "fbclid", "gclid", "gbraid", "wbraid", "mc_cid", "mc_eid",
-      "igshid", "ref", "ref_src"
+      "igshid", "ref_src"
     ];
     trackingParams.forEach((param) => parsed.searchParams.delete(param));
     return safeDecodeUrl(parsed.toString());

@@ -1,3 +1,5 @@
+importScripts("utils.js");
+
 const TRANSLATIONS = {
   en: {
     contextCopyPage: "Copy page URL clearly",
@@ -60,29 +62,6 @@ function t(key, lang) {
   return TRANSLATIONS[activeLang]?.[key] || TRANSLATIONS.en[key] || key;
 }
 
-function safeDecodeUrl(url) {
-  try {
-    return decodeURI(url);
-  } catch (error) {
-    return url;
-  }
-}
-
-function removeTrackingParams(url) {
-  try {
-    const parsed = new URL(url);
-    const trackingParams = [
-      "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-      "fbclid", "gclid", "gbraid", "wbraid", "mc_cid", "mc_eid",
-      "igshid", "ref", "ref_src"
-    ];
-    trackingParams.forEach((param) => parsed.searchParams.delete(param));
-    return safeDecodeUrl(parsed.toString());
-  } catch (error) {
-    return safeDecodeUrl(url);
-  }
-}
-
 async function getLanguageChoice() {
   const result = await chrome.storage.sync.get({ language: "auto" });
   return result.language || "auto";
@@ -135,9 +114,41 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   if (!text || !tab?.id) return;
 
-  chrome.scripting?.executeScript?.({
-    target: { tabId: tab.id },
-    func: (value) => navigator.clipboard.writeText(value),
-    args: [text]
-  });
+  let copied = false;
+  try {
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: writeTextInPage,
+      args: [text]
+    });
+    copied = result?.result === true;
+  } catch (error) {
+    // Restricted pages (chrome://, Web Store) cannot be scripted.
+    copied = false;
+  }
+
+  showCopyBadge(copied, tab.id);
 });
+
+async function writeTextInPage(value) {
+  try {
+    await navigator.clipboard.writeText(value);
+    return true;
+  } catch (error) {
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    const ok = document.execCommand("copy");
+    textarea.remove();
+    return ok;
+  }
+}
+
+function showCopyBadge(copied, tabId) {
+  chrome.action.setBadgeBackgroundColor({ color: copied ? "#1a7f37" : "#cf222e", tabId });
+  chrome.action.setBadgeText({ text: copied ? "✓" : "!", tabId });
+  setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }), 2000);
+}
